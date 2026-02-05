@@ -1,75 +1,147 @@
 const Institution = require("../models/institmodel");
-exports.createInsti = async (req, res) => {
-     
-    try {
-        console.log(req.body);
-        const {institutionid,name,description,institutionType,location,address,country,contactNumber,email,website,logo,establishedYear,accreditation,courses,ratingAverage,totalStudents,isActive,createdAt} = req.body;
-        const insti = await new Institution({
-            institutionid,name,description,institutionType,location,address,country,contactNumber,email,website,logo,establishedYear,accreditation,courses,ratingAverage,totalStudents,isActive,createdAt});
-        await insti.save();
-        res.status(201).send("institution  added successfully");
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-};
- // get all courses
-        exports.getAllInsti = async (req, res) => {
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+/* ========= REGISTER ========= */
+exports.registerInsti = async (req, res) => {
   try {
-    const institution = await Institution.find();
+    const { name, email, password, description } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).send("All fields required");
+    }
+
+    const instiExist = await Institution.findOne({ email });
+    if (instiExist) return res.status(400).send("Institution already exists");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const institution = new Institution({
+      name,
+      email,
+      password: hashedPassword,
+      description
+    });
+
+    await institution.save();
+
+    res.status(201).json({ message: "Institution registered successfully" });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+/* ========= LOGIN ========= */
+exports.loginInsti = async (req, res) => {
+  console.log(req.body);
+  
+  try {
+    const { email, password } = req.body;
+
+    const institution = await Institution.findOne({ email });
+    if (!institution) return res.status(404).send("Institution not found");
+
+    const isMatch = await bcrypt.compare(password, institution.password);
+    if (!isMatch) return res.status(400).send("Invalid credentials");
+
+    const token = jwt.sign(
+      { id: institution._id, role: "institution" },
+      process.env.SECRET_KEY,
+      { expiresIn: "1d" }
+    );
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: false,     // ✅ MUST be false on localhost
+  sameSite: "lax",   // ✅ allow same-site requests
+  maxAge: 60 * 60 * 1000
+});
+
+    res.status(200).json({ message: "Login successful", token });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+/* ========= GET ALL INSTITUTIONS ========= */
+exports.getAllInsti = async (req, res) => {
+  try {
+    const institutions = await Institution.find().select("-password");
+    res.status(200).json(institutions);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+/* ========= GET ONE INSTITUTION BY ID ========= */
+exports.getInstiById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const institution = await Institution.findById(id).select("-password");
+    if (!institution) return res.status(404).send("Institution not found");
+
     res.status(200).json(institution);
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
-// get one course
-exports.getInstiById = async (req, res) => {
+
+/* ========= GET LOGGED-IN INSTITUTION PROFILE ========= */
+exports.getInstiFromToken = async (req, res) => {
   try {
-    const institution = await Institution .findById(req.params.id);
+    const insti_id = req.user; // set by auth middleware
 
-    if (!course) {
-      return res.status(404).send("insti not found");
-    }
+    const institution = await Institution
+      .findById(insti_id)
+      .select("-password");
 
-    res.status(200).json(course);
+    if (!institution)
+      return res.status(404).send("Institution not found");
+
+    res.status(200).json(institution);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(401).send("Invalid or expired token");
   }
 };
-// update course
+
+
+/* ========= UPDATE LOGGED-IN INSTITUTION ========= */
 exports.updateInsti = async (req, res) => {
   try {
-    const updatedinstitution = await Institution.findByIdAndUpdate(
-      req.params.id,
+    const token = req.cookies.insti_token;
+    console.log(token);
+    
+    if (!token) return res.status(401).send("No token found");
+
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+    const updatedInsti = await Institution.findByIdAndUpdate(
+      decoded.id,
       req.body,
-      { new: true, runValidators: true }
-    );
+      { new: true }
+    ).select("-password");
 
-    if (!updatedinstitution) {
-      return res.status(404).send("insti not found");
-    }
+    if (!updatedInsti) return res.status(404).send("Institution not found");
 
-    res.status(200).json({
-      message: "insti updated successfully",
-      data: updatedinstitution
-    });
+    res.status(200).json(updatedInsti);
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
-
-
-        
-// delete course
+/* ========= DELETE LOGGED-IN INSTITUTION ===
+====== */
 exports.deleteInsti = async (req, res) => {
   try {
-    const deletedInsti = await Institution.findByIdAndDelete(req.params.id);
+    const token = req.cookies.insti_token;
+    if (!token) return res.status(401).send("No token found");
 
-    if (!deletedInsti) {
-      return res.status(404).send("Insti not found");
-    }
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
-    res.status(200).send("insti deleted successfully");
+    const deletedInsti = await Institution.findByIdAndDelete(decoded.id);
+    if (!deletedInsti) return res.status(404).send("Institution not found");
+
+    res.status(200).send("Institution deleted successfully");
   } catch (error) {
     res.status(500).send(error.message);
   }

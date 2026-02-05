@@ -18,10 +18,10 @@ exports.createCourse = async (req, res) => {
             difficultyLevel,
             skillsCovered,
             provider,
-            institutionid,
             location,
             mode,
             duration,
+            
             amount,
             ratingAverage,
             totalEnrollments,
