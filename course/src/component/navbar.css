@@ -116,22 +116,7 @@
   background: #e5e7eb;
 }
 
-/* Login */
-.login-btn {
-  border: 1px solid #e5e7eb;
-  padding: 8px 16px;
-  border-radius: 10px;
 
-  font-size: 14px;
-  color: #111827;
-  text-decoration: none;
-
-  transition: all 0.2s ease;
-}
-
-.login-btn:hover {
-  background: #f9fafb;
-}
 
 /* Signup */
 .signup-btn {
@@ -153,9 +138,9 @@
   box-shadow: 0 6px 16px rgba(37, 99, 235, 0.45);
 }
 .logo{
-  size: 70px;
+  size: 100px;
 }
 .logo-img{
-  height: 70px;
-  width: 70px;
+  height: 80px;
+  width: 100px;
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaComments } from "react-icons/fa";
 import "./navbar.css";
-import logo from "./images/logon.jpg"
+import logo from "../component/images/logofinall.png"
 
 const Navbar = () => {
   return (
@@ -11,7 +11,7 @@ const Navbar = () => {
 
         <Link to="/" className="logo">
           <img src={logo} alt="Logo" className="logo-img" />
-          <span className="logo-text">EduPath</span>
+          
         </Link>
 
         <ul className="nav-links">
