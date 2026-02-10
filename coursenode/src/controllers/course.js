@@ -1,106 +1,107 @@
-const Course  = require("../models/course")
+const Course = require("../models/course");
 
+/* CREATE COURSE */
 exports.createCourse = async (req, res) => {
-    
-    
-    try {
-        console.log(req.body);
-        const { title, description, category, subcategory, difficultyLevel, skillsCovered,provider, institutionid,location, mode,duration,  amount,ratingAverage,totalEnrollments,  startDate,endDate, certificateProvided,prerequisites,syllabus,thumbnail, isActive,createdAt
-        } = req.body;
-
-
-
-        const course = await new Course({
-            title,
-            description,
-            category,
-            subcategory,
-            difficultyLevel,
-            skillsCovered,
-            provider,
-            location,
-            mode,
-            duration,
-            
-            amount,
-            ratingAverage,
-            totalEnrollments,
-            startDate,
-            endDate,
-            certificateProvided,
-            prerequisites,
-            syllabus,
-            thumbnail,
-            isActive,
-            createdAt
-
-        });
-        await course.save();
-        res.status(201).send("course added successfully");
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-};
-
-        // get all courses
-        exports.getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.find();
-    res.status(200).json(courses);
+    const { courseName, category, mode, fees, totalSeats } = req.body;
+
+    const course = await Course.create({
+      courseName,
+      category,
+      mode,
+      fees,
+      totalSeats
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Course added successfully",
+      data: course
+    });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to add course",
+      error: error.message
+    });
   }
 };
-// get one course
+
+/* GET ALL COURSES */
+exports.getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find();
+    res.status(200).json({ success: true, data: courses });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to load courses",
+      error: error.message
+    });
+  }
+};
+
+/* GET COURSE BY ID */
 exports.getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
 
-    if (!course) {
-      return res.status(404).send("Course not found");
-    }
+    if (!course)
+      return res.status(404).json({ success: false, message: "Course not found" });
 
-    res.status(200).json(course);
+    res.status(200).json({ success: true, data: course });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load course",
+      error: error.message
+    });
   }
 };
-// update course
+
+/* UPDATE COURSE */
 exports.updateCourse = async (req, res) => {
   try {
-    const updatedCourse = await Course.findByIdAndUpdate(
+    const course = await Course.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true }
+      { new: true }
     );
 
-    if (!updatedCourse) {
-      return res.status(404).send("Course not found");
-    }
+    if (!course)
+      return res.status(404).json({ success: false, message: "Course not found" });
 
     res.status(200).json({
+      success: true,
       message: "Course updated successfully",
-      data: updatedCourse
+      data: course
     });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Update failed",
+      error: error.message
+    });
   }
 };
 
-
-
-        
-// delete course
+/* DELETE COURSE */
 exports.deleteCourse = async (req, res) => {
   try {
-    const deletedCourse = await Course.findByIdAndDelete(req.params.id);
+    const course = await Course.findByIdAndDelete(req.params.id);
 
-    if (!deletedCourse) {
-      return res.status(404).send("Course not found");
-    }
+    if (!course)
+      return res.status(404).json({ success: false, message: "Course not found" });
 
-    res.status(200).send("Course deleted successfully");
+    res.status(200).json({
+      success: true,
+      message: "Course deleted successfully"
+    });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Delete failed",
+      error: error.message
+    });
   }
 };

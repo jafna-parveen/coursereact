@@ -51,8 +51,7 @@ exports.loginInsti = async (req, res) => {
     );
 res.cookie("token", token, {
   httpOnly: true,
-  secure: false,     // ✅ MUST be false on localhost
-  sameSite: "lax",   // ✅ allow same-site requests
+  secure: false,    
   maxAge: 60 * 60 * 1000
 });
 

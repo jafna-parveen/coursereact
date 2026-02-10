@@ -8,25 +8,20 @@ const courseSchema = new Schema({
   //   trim: true
 
   // },
-  title: {
+ courseName: {
     type: String,
     required: true,
     trim: true
   },
 
-  description: {
+  category: {
     type: String,
     required: true
   },
 
-//   category: {
-//     type: String,
-//     required: true
-//   },
-
-//   subcategory: {
-//     type: String
-//   },
+Seats: {
+    type: String
+  },
 
 //   difficultyLevel: {
 //     type: String,
@@ -35,9 +30,9 @@ const courseSchema = new Schema({
 
 //   skillsCovered: [{ type: String }],
 
-//   provider: {
-//     type: String
-//   },
+Status: {
+    type: String
+  },
 
 //   institutionid: {
 //     type: String,
@@ -48,21 +43,21 @@ const courseSchema = new Schema({
 //     type: String
 //   },
 
-//   mode: {
-//     type: String,
-//     enum: ["Online", "Offline", "Hybrid"],
-//     default: "Online"
-//   },
+  mode: {
+    type: String,
+    enum: ["Online", "Offline", ],
+    default: "Online"
+  },
 
 //   duration: {
 //     type: Number,
 //     required: true
 //   },
 
-//   amount: {
-//     type: Number,
-//     required: true
-//   },
+fees: {
+    type: Number,
+    required: true
+  },
 
 //   ratingAverage: {
 //     type: Number,

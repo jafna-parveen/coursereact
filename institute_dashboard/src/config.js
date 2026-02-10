@@ -3,10 +3,20 @@ const config = {
   defaultPath: '/dashboard',
   fontFamily: `'Roboto', sans-serif`,
   borderRadius: 4,
-  env: import.meta.env.VITE_REACT_APP_ENV,
-  ip: import.meta.env.VITE_REACT_APP_API_ENDPOINT,
-  token: import.meta.env.VITE_REACT_APP_API_TOKEN,
-  imgServerip: import.meta.env.VITE_REACT_APP_IMG_API_ENDPOINT
+
+  // environment
+  env: import.meta.env.VITE_REACT_APP_ENV || 'development',
+
+  // ✅ BACKEND API BASE URL
+  ip: import.meta.env.VITE_REACT_APP_API_ENDPOINT || 'http://localhost:5000',
+
+  // ✅ TOKEN MUST COME FROM STORAGE (NOT .env)
+  token: localStorage.getItem('token'),
+
+  // image server
+  imgServerip:
+    import.meta.env.VITE_REACT_APP_IMG_API_ENDPOINT ||
+    'http://localhost:5000/uploads'
 };
 
 export default config;

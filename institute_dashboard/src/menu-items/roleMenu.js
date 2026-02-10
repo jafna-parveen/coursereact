@@ -1,8 +1,22 @@
-import { IconLayoutDashboard, IconScale, IconReceipt2, IconMessageCircle , IconStar, IconAlertTriangle, IconShieldCheck, IconClockHour1, IconFileImport, IconUserExclamation } from '@tabler/icons-react';
-
+import {
+  IconLayoutDashboard,
+  IconBook,
+  IconUsers,
+  IconArmchair,
+  IconStar,
+  IconBell,
+  IconFileAnalytics
+} from '@tabler/icons-react';
 // constant
-const icons = { IconLayoutDashboard, IconScale, IconReceipt2, IconStar,  IconMessageCircle, IconAlertTriangle, IconShieldCheck, IconClockHour1, IconFileImport, IconUserExclamation };
-
+const icons = {
+  IconLayoutDashboard,
+  IconBook,
+  IconUsers,
+  IconArmchair,
+  IconStar,
+  IconBell,
+  IconFileAnalytics
+};
 const RoleMenu = {
   id: 'dashboard',
   title: '',
@@ -16,40 +30,31 @@ const RoleMenu = {
       icon: icons.IconLayoutDashboard,
       breadcrumbs: false
     },
-    // {
-    //   id: 'facility',
-    //   title: 'Facilities',
-    //   type: 'item',
-    //   url: '/facility',
-    //   icon: icons.IconShieldCheck,
-    //   breadcrumbs: false
-    // },
-    //     {
-    //   id: 'userManagment',
-    //   title: 'Users',
-    //   type: 'item',
-    //   url: '/userManagment',
-    //   icon: icons.IconFileImport,
-    //   breadcrumbs: false
-    // },
-    
-    //     {
-    //   id: 'reportedIssues',
-    //   title: 'Issues',
-    //   type: 'item',
-    //   url: '/reportedIssues',
-    //   icon: icons.IconAlertTriangle,
-    //   breadcrumbs: false
-    // },
-    // {
-    //   id: 'userfeedback',
-    //   title: 'User Feedback',
-    //   type: 'item',
-    //   url: '/userfeedback',
-    //   icon: icons.IconMessageCircle ,
-    //   breadcrumbs: false
-    // },
-        {
+    {
+      id: 'courses',
+      title: 'courses',
+      type: 'item',
+      url: '/courses',
+      icon: icons.IconBook,
+      breadcrumbs: false
+    },
+    {
+      id: 'students',
+      title: 'Students',
+      type: 'item',
+      url: '/students',
+      icon: icons.IconUsers,
+      breadcrumbs: false
+    },
+    {
+      id: 'seat-management',
+      title: 'Seat Management',
+      type: 'item',
+      url: '/seat-management',
+      icon: icons.IconArmchair,
+      breadcrumbs: false
+    },
+    {
       id: 'rating',
       title: 'Ratings & Feedback',
       type: 'item',
@@ -57,7 +62,25 @@ const RoleMenu = {
       icon: icons.IconStar,
       breadcrumbs: false
     },
+    {
+      id: 'notifications',
+      title: 'Notification',
+      type: 'item',
+      url: '/notification',
+      icon: icons.IconBell,
+      breadcrumbs: false
+    },
+    {
+      id: 'reports',
+      title: 'Reports',
+      type: 'item',
+      url: '/reports',
+      icon: icons.IconFileAnalytics,
+      breadcrumbs: false
+    },
     
+     
+
 
 
 

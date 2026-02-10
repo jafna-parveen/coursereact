@@ -39,7 +39,7 @@ const Footer = () => {
         }}
       >
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
-          Designed and Developed by FSD Academy
+          Designed and Developed by 
          
         </Typography>
         <Typography color="grey" variant="caption" >

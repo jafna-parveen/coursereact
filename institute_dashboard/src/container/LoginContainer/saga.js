@@ -10,8 +10,6 @@ import * as actionType from './slice';
 function* login(action) {
 
   const loginReq = {
-    client_id: action.payload.client_id,
-    client_secret: action.payload.client_secret,
     email: action.payload.email,
     password: action.payload.password
   };
@@ -29,7 +27,7 @@ function* login(action) {
     const res = yield call(commonApi, params);
 
     if (res) {
-      localStorage.setItem('Token', JSON.stringify(res));
+     
 
       yield call(toast.success, 'Login successful', { autoClose: 3000 });
 
@@ -47,7 +45,7 @@ function* login(action) {
 }
 
 function* userMe() {
-  const token = JSON.parse(localStorage.getItem('Token'));
+  
   try {
     const params = {
       api: `${appConfig.ip}/api/profile`,
@@ -55,7 +53,7 @@ function* userMe() {
       successAction: actionType.userMeSuccess(),
       failAction: actionType.userMeFail(),
       authorization: `Bearer`,
-      token: `${token?.accessToken}`,
+      
     
     };
 

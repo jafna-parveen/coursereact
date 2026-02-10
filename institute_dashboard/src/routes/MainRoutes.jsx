@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
+
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
@@ -7,87 +8,50 @@ import AuthGuard from 'utils/authGuard';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('ui-component/dashboard')));
-const NopageFound = Loadable(lazy(() => import('ui-component/common/no-page/NoPage')));
-// const UserManagementPage = Loadable(lazy(() => import('ui-component/user_management/index')));
-const UserFeedbackPage = Loadable(lazy(() => import('ui-component/user_feedback/index')));
-const UserRatingPage = Loadable(lazy(() => import('ui-component/user_rating/index')));
-// const UserFacility = Loadable(lazy(() => import('ui-component/user_facility/index')));
-// const UserReportedIssues = Loadable(lazy(() => import('ui-component/user_reported_issues/index')));
+const Course = Loadable(lazy(() => import('ui-component/courses')));
+const Students = Loadable(lazy(() => import('ui-component/students')));
+const Seatmanagement = Loadable(lazy(() => import('ui-component/seatmanagement')));
 
-
-
-
-
-
-
-
-// ==============================|| MAIN ROUTING ||============================== //
+const UserFeedbackPage = Loadable(lazy(() => import('ui-component/user_feedback')));
+const UserRatingPage = Loadable(lazy(() => import('ui-component/user_rating')));
 
 const MainRoutes = {
   path: '/',
   element: (
-    <>
-      <AuthGuard user={['Vendor,Surveyor', 'Vendor', 'Requester']}>
-        <MainLayout />
-      </AuthGuard>
-    </>
+    <AuthGuard user={['Vendor', 'Surveyor', 'Requester']}>
+      <MainLayout />
+    </AuthGuard>
   ),
   children: [
     {
       path: '',
-      element: <Navigate to="/dashboard" replace={true} />
+      element: <Navigate to="dashboard" replace />
     },
     {
-      path: '/dashboard',
+      path: 'dashboard',
       element: <DashboardDefault />
     },
-    // {
-    //   path: 'facility',
-    //   children: [
-    //     {
-    //       path: '',
-    //       element: <UserFacility />
-    //     }
-    //   ]
-    // },
-    //     {
-    //   path: 'userManagment',
-    //   children: [
-    //     {
-    //       path: '',
-    //       element: <UserManagementPage />
-    //     }
-    //   ]
-    // },
-    //   {
-    //   path: 'reportedIssues',
-    //   children: [
-    //     {
-    //       path: '',
-    //       element: <UserReportedIssues />
-    //     }
-    //   ]
-    // },
+    {
+      path: 'courses',
+      element: <Course />
+    },
+    {
+      path: 'students',
+      element: <Students />
+    },
+    {
+      path: 'seat-management',
+      element: <Seatmanagement />
+    },
+    
     {
       path: 'userfeedback',
-      children: [
-        {
-          path: '',
-          element: <UserFeedbackPage />
-        }
-      ]
+      element: <UserFeedbackPage />
     },
-         {
+    {
       path: 'rating',
-      children: [
-        {
-          path: '',
-          element: <UserRatingPage />
-        }
-      ]
-    },
-
-
+      element: <UserRatingPage />
+    }
   ]
 };
 
