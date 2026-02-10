@@ -3,7 +3,7 @@ const CareerRole = require("../models/rolemodel");
 /* ================= CREATE ROLE ================= */
 exports.createRole = async (req, res) => {
   try {
-    console.log(req.body);
+   
 
     const {
       title,

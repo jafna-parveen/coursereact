@@ -19,7 +19,8 @@ function* commonApi(value) {
     response = yield call(fetch, value.api, {
       method: value.method,
       headers,
-      body: value.body || null
+      body: value.body || null,
+      credentials:"include"
     });
   } catch (err) {
     // network / CORS error

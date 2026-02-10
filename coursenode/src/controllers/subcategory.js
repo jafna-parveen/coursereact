@@ -45,7 +45,7 @@ const getSubCategoryById = async (req, res) => {
 
 /* ================= UPDATE ================= */
 const updateSubCategory = async (req, res) => {
-  console.log(req.file);
+ 
   
   try {
     if (req.file) {

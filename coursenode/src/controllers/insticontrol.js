@@ -33,8 +33,8 @@ exports.registerInsti = async (req, res) => {
 
 /* ========= LOGIN ========= */
 exports.loginInsti = async (req, res) => {
-  console.log(req.body);
-  
+  console.log("a",req.body);
+
   try {
     const { email, password } = req.body;
 
@@ -49,11 +49,11 @@ exports.loginInsti = async (req, res) => {
       process.env.SECRET_KEY,
       { expiresIn: "1d" }
     );
-res.cookie("token", token, {
-  httpOnly: true,
-  secure: false,    
-  maxAge: 60 * 60 * 1000
-});
+    
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+    });
 
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
@@ -108,8 +108,8 @@ exports.getInstiFromToken = async (req, res) => {
 exports.updateInsti = async (req, res) => {
   try {
     const token = req.cookies.insti_token;
-    console.log(token);
     
+
     if (!token) return res.status(401).send("No token found");
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY);

@@ -32,6 +32,9 @@ export default function BackgroundLetterAvatars() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  console.log("userData",userData);
+  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,7 +51,7 @@ export default function BackgroundLetterAvatars() {
 
   // Extract user info
   const name = userData?.fullName || `${userData?.firstName || ''} ${userData?.lastName || ''}`.trim() || 'User';
-  const email = userData?.email || 'user@email.com';
+  const email = userData.email
   const phone = userData?.phone || 'N/A';
   const role = userData?.role || 'N/A';
   const status = userData?.status || 'N/A';
