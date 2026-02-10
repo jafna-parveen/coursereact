@@ -10,8 +10,7 @@ import * as actionType from './slice';
 function* login(action) {
 
   const loginReq = {
-    client_id: action.payload.client_id,
-    client_secret: action.payload.client_secret,
+    
     email: action.payload.email,
     password: action.payload.password
   };

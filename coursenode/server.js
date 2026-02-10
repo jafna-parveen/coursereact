@@ -11,9 +11,12 @@ const course = require("./src/routes/course");
 const institution = require("./src/routes/instirouter");
 const role = require("./src/routes/role");
 const subcat = require("./src/routes/subcategory");
+const studentRouter = require("./src/routes/studentRoutes");
+const adminRouter=require("./src/routes/adminRoutes")
+const reviewRouter=require("./src/routes/reviewRoutes")
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 7000;
 app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
@@ -33,6 +36,9 @@ app.use("/api", course);
 app.use("/api", institution);
 app.use("/api", role);
 app.use("/api", subcat);
+app.use("/api", studentRouter);
+app.use("/api",adminRouter);
+app.use("/api",reviewRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
