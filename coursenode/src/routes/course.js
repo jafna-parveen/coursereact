@@ -6,7 +6,7 @@ const courseController = require("../controllers/course");
 router.post("/institute/course", courseController.createCourse);
 
 /* GET ALL COURSES */
-router.get("/institute/course", courseController.getAllCourses);
+router.get("/institute/getcourse", courseController.getAllCourses);
 
 /* GET COURSE BY ID */
 router.get("/institute/course/:id", courseController.getCourseById);

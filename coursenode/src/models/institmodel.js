@@ -3,11 +3,10 @@ const { Schema } = mongoose;
 
 const institutionSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true
-    },
+
+    name: { type: String, required: true },
+
+
 
     email: {
       type: String,

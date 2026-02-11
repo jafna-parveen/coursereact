@@ -3,11 +3,12 @@ const Course = require("../models/course");
 /* CREATE COURSE */
 exports.createCourse = async (req, res) => {
   try {
-    const { courseName, category, mode, fees, totalSeats } = req.body;
+    const { courseName, category,institutionid, mode, fees, totalSeats } = req.body;
 
     const course = await Course.create({
       courseName,
       category,
+      institutionid,
       mode,
       fees,
       totalSeats

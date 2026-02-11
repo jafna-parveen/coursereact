@@ -5,8 +5,9 @@ const Student = require("../models/student")
 
 // ================= REGISTER =================
 exports.registerStudent = async (req, res) => {
+  console.log(req.body)
   try {
-    const { name, email, password } = req.body;
+    const { studentname, email, password } = req.body;
 
     // check if student already exists
     const existingStudent = await Student.findOne({ email });
@@ -18,7 +19,7 @@ exports.registerStudent = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const student = new Student({
-      name,
+      studentname,
       email,
       password: hashedPassword
     });
@@ -136,7 +137,7 @@ exports.loginStudent = async (req, res) => {
       token,
       student: {
         id: student._id,
-        name: student.name,
+        studentname: student.studentname,
         email: student.email
       }
     });

@@ -5,7 +5,8 @@ const studentcontroller=require("../controllers/studentcontroller")
 // =================================
 //          register STUDENT
 // =================================
-router.post("/register", studentcontroller.registerStudent);
+
+router.post("/student/register", studentcontroller.registerStudent);
 
 
 // =================================
@@ -28,5 +29,5 @@ router.delete('/deletestudent/:id',studentcontroller.deleteStudent)
 // =================================
 //          LOGIN STUDENT
 // =================================
-router.post("/login", studentcontroller.loginStudent);
+router.post("/student/login", studentcontroller.loginStudent);
 module.exports =router

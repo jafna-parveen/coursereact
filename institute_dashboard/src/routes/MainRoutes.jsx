@@ -11,6 +11,8 @@ const DashboardDefault = Loadable(lazy(() => import('ui-component/dashboard')));
 const Course = Loadable(lazy(() => import('ui-component/courses')));
 const Students = Loadable(lazy(() => import('ui-component/students')));
 const Seatmanagement = Loadable(lazy(() => import('ui-component/seatmanagement')));
+const Order = Loadable(lazy(() => import('ui-component/order')));
+
 
 const UserFeedbackPage = Loadable(lazy(() => import('ui-component/user_feedback')));
 const UserRatingPage = Loadable(lazy(() => import('ui-component/user_rating')));
@@ -38,6 +40,10 @@ const MainRoutes = {
     {
       path: 'students',
       element: <Students />
+    },
+    {
+      path: 'order',
+      element: <Order />
     },
     {
       path: 'seat-management',

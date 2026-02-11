@@ -34,10 +34,10 @@ Status: {
     type: String
   },
 
-//   institutionid: {
-//     type: String,
-//     required: true
-//   },
+  institution: {
+    type: String,
+    required: true
+  },
 
 //   location: {
 //     type: String
