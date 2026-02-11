@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCourses } from "../../container/coursecontainer/slice";
+
 import {
   Box,
   Grid,
@@ -12,60 +15,13 @@ import {
   TableHead,
   TableRow,
   Chip,
-  Paper
+  Paper,
+  CircularProgress
 } from "@mui/material";
+
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-
-const seatStats = [
-  {
-    title: "Total Seats",
-    value: 750,
-    icon: <EventSeatIcon fontSize="large" color="primary" />
-  },
-  {
-    title: "Filled Seats",
-    value: 582,
-    icon: <CheckCircleIcon fontSize="large" color="success" />
-  },
-  {
-    title: "Vacant Seats",
-    value: 168,
-    icon: <CancelIcon fontSize="large" color="warning" />
-  }
-];
-
-const courses = [
-  {
-    name: "Full Stack Web Development",
-    total: 150,
-    filled: 140,
-    vacant: 10,
-    status: "Limited"
-  },
-  {
-    name: "Data Science Fundamentals",
-    total: 200,
-    filled: 200,
-    vacant: 0,
-    status: "Full"
-  },
-  {
-    name: "UI/UX Design Bootcamp",
-    total: 120,
-    filled: 80,
-    vacant: 40,
-    status: "Available"
-  },
-  {
-    name: "Cloud Computing with AWS",
-    total: 180,
-    filled: 162,
-    vacant: 18,
-    status: "Limited"
-  }
-];
 
 const statusColor = {
   Available: "success",
@@ -74,32 +30,99 @@ const statusColor = {
 };
 
 const SeatManagement = () => {
+  const dispatch = useDispatch();
+
+  const { courses, loading } = useSelector(
+    (state) => state.cours
+  );
+
+  /* ===== FETCH COURSES ===== */
+  useEffect(() => {
+    dispatch(getCourses());
+  }, [dispatch]);
+
+  /* ===== DERIVED SEAT DATA ===== */
+  const seatData = useMemo(() => {
+    let totalSeats = 0;
+    let filledSeats = 0;
+
+    const courseSeats = courses.map((course) => {
+      // 🔴 TEMP: replace with real student count later
+      const filled = Math.floor(course.totalSeats * 0.8);
+      const vacant = course.totalSeats - filled;
+
+      totalSeats += course.totalSeats;
+      filledSeats += filled;
+
+      let status = "Available";
+      if (vacant === 0) status = "Full";
+      else if (vacant <= 20) status = "Limited";
+
+      return {
+        name: course.courseName,
+        total: course.totalSeats,
+        filled,
+        vacant,
+        status
+      };
+    });
+
+    return {
+      totalSeats,
+      filledSeats,
+      vacantSeats: totalSeats - filledSeats,
+      courseSeats
+    };
+  }, [courses]);
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={6}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box p={3}>
       <Typography variant="h5" fontWeight="bold" mb={3}>
         Seat Management
       </Typography>
 
-      {/* Top Stats */}
+      {/* ===== TOP STATS ===== */}
       <Grid container spacing={3} mb={3}>
-        {seatStats.map((item, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
-              <Box mr={2}>{item.icon}</Box>
-              <CardContent sx={{ p: 0 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  {item.title}
-                </Typography>
-                <Typography variant="h6" fontWeight="bold">
-                  {item.value}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        <Grid item xs={12} md={4}>
+          <Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
+            <EventSeatIcon fontSize="large" color="primary" />
+            <CardContent>
+              <Typography variant="subtitle2">Total Seats</Typography>
+              <Typography variant="h6">{seatData.totalSeats}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
+            <CheckCircleIcon fontSize="large" color="success" />
+            <CardContent>
+              <Typography variant="subtitle2">Filled Seats</Typography>
+              <Typography variant="h6">{seatData.filledSeats}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
+            <CancelIcon fontSize="large" color="warning" />
+            <CardContent>
+              <Typography variant="subtitle2">Vacant Seats</Typography>
+              <Typography variant="h6">{seatData.vacantSeats}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
 
-      {/* Course Seat Table */}
+      {/* ===== COURSE TABLE ===== */}
       <Card>
         <CardContent>
           <Typography variant="h6" fontWeight="bold" mb={2}>
@@ -119,7 +142,7 @@ const SeatManagement = () => {
               </TableHead>
 
               <TableBody>
-                {courses.map((course, index) => (
+                {seatData.courseSeats.map((course, index) => (
                   <TableRow key={index}>
                     <TableCell>{course.name}</TableCell>
                     <TableCell align="center">{course.total}</TableCell>
@@ -134,6 +157,14 @@ const SeatManagement = () => {
                     </TableCell>
                   </TableRow>
                 ))}
+
+                {seatData.courseSeats.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">
+                      No courses found
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

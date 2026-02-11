@@ -114,9 +114,9 @@ const ResponsiveIcons = () => {
         }}
         sx={{
           color: 'white',
-          backgroundColor: '#34699c', 
+          backgroundColor: '#00182e', 
           '&:hover': {
-            backgroundColor: '#018054' 
+            backgroundColor: '#da7808' 
           },
           padding: matchesXs ? '6px' : '8px'
         }}
@@ -156,10 +156,10 @@ const ResponsiveIcons = () => {
             sx={{
               textTransform: 'none',
               borderRadius: 2,
-              borderColor: '#34699c',
-              color: '#34699c',
+              borderColor: '#00182e',
+              color: '#00182e',
               '&:hover': {
-                borderColor: '#017a53',
+                borderColor: '#00182e',
                 backgroundColor: '#34699c0a'
               }
             }}
@@ -175,9 +175,9 @@ const ResponsiveIcons = () => {
             sx={{
               textTransform: 'none',
               borderRadius: 2,
-              backgroundColor: '#34699c',
+              backgroundColor: '#00182e',
               '&:hover': {
-                backgroundColor: '#017a53'
+                backgroundColor: '#da7808'
               }
             }}
           >

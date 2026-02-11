@@ -12,7 +12,7 @@ import FormikTextField from 'ui-component/common/loginInput';
 import { userLogin } from 'container/LoginContainer/slice';
 import { getRatingCount } from 'container/RatingContainer/slice';
 
-import logo from 'assets/images/logon.jpg';
+import logo from 'assets/images/logofinall.png';
 const AppVersion = import.meta.env.VITE_APP_VERSION;
 
 const AuthLogin = (props) => {
@@ -66,19 +66,7 @@ const AuthLogin = (props) => {
         <Box sx={{ mb: 3, display: 'flex', justifyContent: 'center' }}>
           <Box component="img" src={logo} alt="EDUTECH" sx={{ height: { xs: 95, sm: 100 }, maxWidth: '100%' }} />
         </Box>
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{
-            mb: 2,
-            fontWeight: 700,
-            textAlign: 'center',
-            letterSpacing: 0.5,
-            color: '#34699c'
-          }}
-        >
-        EDUTECH
-        </Typography>
+        
 
         <Typography
           variant="h4"
@@ -139,15 +127,15 @@ const AuthLogin = (props) => {
                     fontWeight: 600,
                     fontSize: 16,
                     color: '#fff',
-                    backgroundColor: '#34699c',
+                    backgroundColor: '#0c012b',
                     borderRadius: 2,
-                    border: '1px solid #34699c',
+                    border: '1px solid #0c012b',
                     boxShadow: '0px 4px 10px rgba(0,0,0,0.15)',
                     transition: 'all 0.3s ease',
                     '&:hover': {
                       backgroundColor: 'white',
-                      color: '#34699c',
-                      border: '1px solid #34699c'
+                      color: '#0c012b',
+                      border: '1px solid #0c012b'
                     }
                   }}
                 >
@@ -167,7 +155,7 @@ const AuthLogin = (props) => {
         <Divider sx={{ my: 3, width: '100%' }} />
 
         <Typography variant="body2" sx={{ textAlign: 'center', padding: '10px', textDecoration: 'none' }}>
-          Designed and Developed by Edutech
+          Designed and Developed by NXT STEP
                   </Typography>
         <Typography color="primary.main" fontWeight="100">
           Version : {AppVersion}
