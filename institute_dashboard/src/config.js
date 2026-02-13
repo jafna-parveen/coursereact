@@ -8,7 +8,7 @@ const config = {
   env: import.meta.env.VITE_REACT_APP_ENV || 'development',
 
   // ✅ BACKEND API BASE URL
-  ip: import.meta.env.VITE_REACT_APP_API_ENDPOINT || 'http://localhost:5000',
+  ip: import.meta.env.VITE_REACT_APP_API_ENDPOINT || 'http://localhost:7000',
 
   // ✅ TOKEN MUST COME FROM STORAGE (NOT .env)
   token: localStorage.getItem('token'),

@@ -85,13 +85,13 @@ const NavItem = ({ item, level, lastItem }) => {
   
         marginBottom: lastItem ===  item?.id ? '120px !important' : '6px',
         '&:hover': {
-          backgroundColor: 'white !important',
+          backgroundColor: '#202a5d !important',
           marginRight: leftDrawerOpened ? 0 : '0px'
         },
         '&.Mui-selected': {
-          backgroundColor: '#34699c !important',
+          backgroundColor: '#537fa0!important',
           marginRight: leftDrawerOpened ? 0 : '0px',
-          color: '#FFFFFF'
+          color: '#6d0a65'
         }
       }}
       selected={isSelected}
@@ -106,7 +106,7 @@ const NavItem = ({ item, level, lastItem }) => {
 
           alignItems: 'center',
           gap: '10px',
-          backgroundColor: isSelected ? '#34699c !important' : 'transparent',
+          backgroundColor: isSelected ? '#05497c !important' : 'transparent',
           py: level > 1 ? 1 : 1,
           px: leftDrawerOpened ? '' : 3,
           pl: `${level * 10}px`,
@@ -116,11 +116,11 @@ const NavItem = ({ item, level, lastItem }) => {
           position: 'relative', 
 
           '& .MuiListItemIcon-root': {
-            backgroundColor: isSelected ? 'white' : '#34699c',
-            borderRadius: '8px',
+            backgroundColor: isSelected ? 'white' : '#d97f11',
+            borderRadius: '50%',
             p: 1,
             '& svg': {
-              color: isSelected ? '#34699c' : 'white'
+              color: isSelected ? '#1e690b' : 'white'
             }
           },
 
@@ -143,9 +143,9 @@ const NavItem = ({ item, level, lastItem }) => {
               width: '100%' 
             },
             '& .MuiListItemIcon-root': {
-              backgroundColor: 'white',
+              backgroundColor: '#1c034b',
               '& svg': {
-                color: '#34699c !important'
+                color: '#fefcfa !important'
               }
             }
           }
@@ -169,7 +169,7 @@ const NavItem = ({ item, level, lastItem }) => {
             <Typography
               variant={isSelected ? (largeScreen ? 'selectedSideMenu' : 'h5') : largeScreen ? 'sideMenu' : 'body1'}
               sx={{ fontSize: '14px', fontWeight: 400 }}
-              color={isSelected ? 'white' : 'inherit'}
+              color={isSelected ? '#F39C12' : '#F39C12'}
             >
               {item.title}
             </Typography>
@@ -181,7 +181,7 @@ const NavItem = ({ item, level, lastItem }) => {
                 sx={{ ...theme.typography.subMenuCaption }}
                 display="block"
                 gutterBottom
-                color={isSelected ? '#000000' : 'inherit'}
+                color={isSelected ? '#F39C12' : '#F39C12'}
               >
                 {item.caption}
               </Typography>

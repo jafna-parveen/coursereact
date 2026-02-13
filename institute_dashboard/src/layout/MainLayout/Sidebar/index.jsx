@@ -29,7 +29,9 @@ const Sidebar = ({ drawerOpen, drawerToggle }) => {
         </Box>
       </Box>
       <BrowserView>
-        <Box sx={{ position: 'relative', height: matchUpMd ? 'calc(100vh - 88px)' : 'calc(100vh - 99px)', paddingTop: '20px' }}>
+        <Box sx={{ position: 'relative', height: matchUpMd ? 'calc(100vh - 88px)' : 'calc(100vh - 99px)', paddingTop: '20px',
+        background: "#001531"
+}}>
           <Box sx={{ pointerEvents: isDraftOrPending ? 'none' : 'auto', opacity: isDraftOrPending ? 0.5 : 1 }}>
             <MenuList />
           </Box>
@@ -40,15 +42,15 @@ const Sidebar = ({ drawerOpen, drawerToggle }) => {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                borderTop: `1px solid rgba(255, 255, 255, 0.1)`,
+                borderTop: `1px solid rgba(148, 23, 23, 0.1)`,
                 padding: '10px 16px',
                 transition: 'width 0.4s ease',
                 width: drawerOpen ? (largeScreen ? '240px' : '240px') : largeScreen ? '65px' : '50px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
-                backgroundColor: '#f0f9f6',
-                color: 'black',
+                backgroundColor: '#15949f',
+                color: 'white',
                 cursor: isDraftOrPending ? 'not-allowed' : 'pointer',
                 zIndex: 1300
               }}
@@ -67,7 +69,7 @@ const Sidebar = ({ drawerOpen, drawerToggle }) => {
         </Box>
       </BrowserView>
       <MobileView>
-        <Box sx={{ position: 'relative', height: '100vh' }}>
+        <Box sx={{ position: 'relative', height: '100vh', }}>
           <Box sx={{ height: 'calc(100vh - 50px)', overflow: 'auto', px: 2 }}>
             <Box sx={{ pointerEvents: isDraftOrPending ? 'none' : 'auto', opacity: isDraftOrPending ? 0.5 : 1 }}>
               <MenuList />

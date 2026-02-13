@@ -51,6 +51,26 @@ exports.findStudent = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// ============ getall students===========
+exports.getAllStudents = async (req, res) => {
+  try {
+    const student = await Student.find(); 
+   
+
+    res.status(200).json({
+      success: true,
+      count: student.length,
+      data: student
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 
 
 //======== update handler===============

@@ -33,11 +33,13 @@ const orderSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getInstitutionOrdersSuccess: (state, action) => {
-      state.loading = false;
-      state.data = action.payload.data; // because backend sends { success, totalOrders, data }
-      state.error = null;
-    },
+   getInstitutionOrdersSuccess: (state, action) => {
+  state.loading = false;
+  state.data = action.payload; 
+  state.error = null;
+},
+
+
     getInstitutionOrdersFail: (state, action) => {
       state.loading = false;
       state.error = {

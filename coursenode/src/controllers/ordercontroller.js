@@ -1,27 +1,28 @@
 const Order = require("../models/order");
 
+// ================= CREATE ORDER =================
 exports.createOrder = async (req, res) => {
   try {
-    const { student, course, institution,price, status, action } = req.body;
+    const { student, course, institution, price, status } = req.body;
 
     const order = await Order.create({
       student,
       course,
       institution,
       price,
-      status,
-      action
+      status
     });
-    
-     const populatedOrder = await Order.findById(order._id)
+
+    const populatedOrder = await Order.findById(order._id)
       .populate("student", "studentname -_id")
-  .populate("course", "courseName -_id")
-      .populate("institution", "name -_id")
+      .populate("course", "courseName -_id")
+      .populate("institution", "name -_id");
 
     res.status(201).json({
       success: true,
-      data:  populatedOrder
+      data: populatedOrder
     });
+
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -29,6 +30,8 @@ exports.createOrder = async (req, res) => {
     });
   }
 };
+
+// ================= GET INSTITUTION ORDERS =================
 exports.getInstitutionOrders = async (req, res) => {
   try {
     const institutionId = req.params.id;
@@ -38,7 +41,8 @@ exports.getInstitutionOrders = async (req, res) => {
       isActive: true
     })
       .populate("student", "studentname -_id")
-      .populate("course", "courseName -_id");
+      .populate("course", "courseName -_id")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -54,15 +58,21 @@ exports.getInstitutionOrders = async (req, res) => {
   }
 };
 
+// ================= GET ALL =================
 exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ isActive: true });
+    const orders = await Order.find({ isActive: true })
+      .populate("student", "studentname -_id")
+      .populate("course", "courseName -_id")
+      .populate("institution", "name -_id")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
       count: orders.length,
       data: orders
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -71,9 +81,13 @@ exports.getAllOrders = async (req, res) => {
   }
 };
 
+// ================= GET SINGLE =================
 exports.getSingleOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id)
+      .populate("student", "studentname -_id")
+      .populate("course", "courseName -_id")
+      .populate("institution", "name -_id");
 
     if (!order || !order.isActive) {
       return res.status(404).json({
@@ -86,6 +100,7 @@ exports.getSingleOrder = async (req, res) => {
       success: true,
       data: order
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -94,14 +109,18 @@ exports.getSingleOrder = async (req, res) => {
   }
 };
 
-
+// ================= UPDATE =================
 exports.updateOrder = async (req, res) => {
   try {
+    const { status, price } = req.body;
+
     const order = await Order.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      { status, price },
       { new: true, runValidators: true }
-    );
+    )
+      .populate("student", "studentname -_id")
+      .populate("course", "courseName -_id");
 
     if (!order) {
       return res.status(404).json({
@@ -114,6 +133,7 @@ exports.updateOrder = async (req, res) => {
       success: true,
       data: order
     });
+
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -121,4 +141,3 @@ exports.updateOrder = async (req, res) => {
     });
   }
 };
-

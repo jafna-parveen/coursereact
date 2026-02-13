@@ -28,10 +28,16 @@ const statusColor = {
   cancelled: "error"
 };
 
-const OrderManagement = ({ institutionId }) => {
+const OrderManagement = () => {
   const dispatch = useDispatch();
 
+  const userData = useSelector((state) => state.login.userData);
   const { data: orders, loading } = useSelector((state) => state.order);
+
+  const institutionId = userData?._id;
+
+  console.log("InstitutionId:", institutionId);
+  console.log("Orders:", orders);
 
   useEffect(() => {
     if (institutionId) {
@@ -39,13 +45,20 @@ const OrderManagement = ({ institutionId }) => {
     }
   }, [dispatch, institutionId]);
 
+
   // Calculations
   const totalOrders = orders?.length || 0;
-  const paidOrders = orders?.filter(o => o.status === "paid").length || 0;
-  const pendingOrders = orders?.filter(o => o.status === "pending").length || 0;
+
+  const paidOrders =
+    orders?.filter((o) => o.status === "paid").length || 0;
+
+  const pendingOrders =
+    orders?.filter((o) => o.status === "pending").length || 0;
+
   const totalRevenue =
-    orders?.filter(o => o.status === "paid")
-      .reduce((sum, o) => sum + o.price, 0) || 0;
+    orders
+      ?.filter((o) => o.status === "paid")
+      .reduce((sum, o) => sum + Number(o.price || 0), 0) || 0;
 
   const stats = [
     {
@@ -76,7 +89,7 @@ const OrderManagement = ({ institutionId }) => {
         Order Management
       </Typography>
 
-      {/* Top Stats */}
+      {/* Stats Section */}
       <Grid container spacing={3} mb={3}>
         {stats.map((item, index) => (
           <Grid item xs={12} md={3} key={index}>
@@ -102,50 +115,63 @@ const OrderManagement = ({ institutionId }) => {
             Institution Orders
           </Typography>
 
-          <TableContainer component={Paper} elevation={0}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell><b>Student</b></TableCell>
-                  <TableCell><b>Course</b></TableCell>
-                  <TableCell align="center"><b>Price</b></TableCell>
-                  <TableCell align="center"><b>Status</b></TableCell>
-                  <TableCell align="center"><b>Date</b></TableCell>
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {orders?.map((order, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      {order.studentid?.studentname}
-                    </TableCell>
-
-                    <TableCell>
-                      {order.courseid?.courseName}
-                    </TableCell>
-
-                    <TableCell align="center">
-                      ₹ {order.price}
-                    </TableCell>
-
-                    <TableCell align="center">
-                      <Chip
-                        label={order.status}
-                        color={statusColor[order.status]}
-                        size="small"
-                      />
-                    </TableCell>
-
-                    <TableCell align="center">
-                      {new Date(order.createdAt).toLocaleDateString()}
-                    </TableCell>
+          {loading ? (
+            <Typography>Loading orders...</Typography>
+          ) : (
+            <TableContainer component={Paper} elevation={0}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell><b>Student</b></TableCell>
+                    <TableCell><b>Course</b></TableCell>
+                    <TableCell align="center"><b>Price</b></TableCell>
+                    <TableCell align="center"><b>Status</b></TableCell>
+                    <TableCell align="center"><b>Date</b></TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
+                </TableHead>
 
-            </Table>
-          </TableContainer>
+                <TableBody>
+                  {orders?.length > 0 ? (
+                    orders.map((order) => (
+                      <TableRow key={order._id}>
+                        <TableCell>
+                          {order.student?.studentname || "N/A"}
+                        </TableCell>
+
+                        <TableCell>
+                          {order.course?.courseName || "N/A"}
+                        </TableCell>
+
+                        <TableCell align="center">
+                          ₹ {order.price}
+                        </TableCell>
+
+                        <TableCell align="center">
+                          <Chip
+                            label={order.status}
+                            color={statusColor[order.status] || "default"}
+                            size="small"
+                          />
+                        </TableCell>
+
+                        <TableCell align="center">
+                          {order.createdAt
+                            ? new Date(order.createdAt).toLocaleDateString()
+                            : "N/A"}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={5} align="center">
+                        No Orders Found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </CardContent>
       </Card>
     </Box>

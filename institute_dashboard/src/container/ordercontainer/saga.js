@@ -1,7 +1,5 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import commonApi from '../api';
 import appConfig from '../../config';
 import * as actionType from './slice';
@@ -11,10 +9,11 @@ import * as actionType from './slice';
 function* createOrder(action) {
 
   const orderReq = {
-    studentid: action.payload.studentid,
-    courseid: action.payload.courseid,
-    institutionid: action.payload.institutionid,
-    price: action.payload.price
+    student: action.payload.student,
+    course: action.payload.course,
+    institution: action.payload.institution,
+    price: action.payload.price,
+    status: "pending"
   };
 
   try {
@@ -22,27 +21,21 @@ function* createOrder(action) {
     const params = {
       api: `${appConfig.ip}/api/createorder`,
       method: 'POST',
-      successAction: actionType.createOrderSuccess(),
-      failAction: actionType.createOrderFail(),
-      authorization: `Bearer`,
       body: JSON.stringify(orderReq)
     };
 
     const res = yield call(commonApi, params);
 
     if (res) {
-      yield put(actionType.createOrderSuccess(res.data));
+      yield put(actionType.createOrderSuccess(res.data.data));
       yield call(toast.success, 'Order created successfully', { autoClose: 3000 });
-    } else {
-      yield call(toast.error, 'Order creation failed', { autoClose: 3000 });
     }
 
   } catch (error) {
-    console.error('Create Order failed:', error);
     yield put(
       actionType.createOrderFail({
         message: error.message || 'Failed to create order',
-        status: error.response?.status || 500
+        status: 500
       })
     );
     yield call(toast.error, 'Order creation failed', { autoClose: 3000 });
@@ -52,38 +45,37 @@ function* createOrder(action) {
 
 // ================= GET INSTITUTION ORDERS =================
 function* getInstitutionOrders(action) {
-
   try {
-
     const params = {
-      api: `${appConfig.ip}/api/institution-dashboard/${action.payload}`,
-      method: 'GET',
-      successAction: actionType.getInstitutionOrdersSuccess(),
-      failAction: actionType.getInstitutionOrdersFail(),
-      authorization: `Bearer`
+      api: `${appConfig.ip}/api/getinstiorder/${action.payload}`,
+      method: 'GET'
     };
 
     const res = yield call(commonApi, params);
 
-    if (res) {
-      yield put(actionType.getInstitutionOrdersSuccess(res));
-    }
+    console.log("SAGA RESPONSE:", res);
+
+    yield put(
+      actionType.getInstitutionOrdersSuccess(res.data)
+    );
 
   } catch (error) {
-    console.error('Fetch Orders failed:', error);
+    console.log("SAGA ERROR:", error);
+
     yield put(
       actionType.getInstitutionOrdersFail({
-        message: error.message || 'Failed to fetch orders',
-        status: error.response?.status || 500
+        message: error.message,
+        status: 500
       })
     );
-    yield call(toast.error, 'Failed to load orders', { autoClose: 3000 });
   }
 }
 
 
+
 // ================= WATCHER =================
 export default function* OrderWatcher() {
-  yield takeEvery(actionType.createOrder, createOrder);
-  yield takeEvery(actionType.getInstitutionOrders, getInstitutionOrders);
+ yield takeEvery(actionType.createOrder.type, createOrder);
+ yield takeEvery(actionType.getInstitutionOrders, getInstitutionOrders);
+
 }

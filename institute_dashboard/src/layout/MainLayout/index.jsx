@@ -92,7 +92,7 @@ const MainLayout = () => {
     >
       <Toolbar
         sx={{
-          background: '#f0f9f6'
+          background: '#001531'
         }}
       >
         <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />

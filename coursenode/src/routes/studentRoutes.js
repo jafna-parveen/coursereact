@@ -13,6 +13,9 @@ router.post("/student/register", studentcontroller.registerStudent);
 //          READ STUDENT
 // =================================
 router.get('/getstudent/:id',studentcontroller.findStudent)
+router.get("/getallstudents",studentcontroller.getAllStudents);
+
+
 
 
 // =================================
